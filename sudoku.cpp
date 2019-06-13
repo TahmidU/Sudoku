@@ -3,19 +3,22 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
 
 bool checker() 
 {
 	return false;
 }
 
-std::vector<int> tokenise(const std::string &str, std::vector<int> &tokens) 
+void tokenise(const std::string &args, const int &row, std::array<std::array<int,9>,9> &matrix) 
 {
 	std::string word = "";
+	int arr_position = 0; //Track array position.
 	
-	for (auto x : str) 
+	for (auto x : args) 
 	{
-		if (tokens.size() > 8) 
+		//If positions run out then drop the others.
+		if (arr_position > 8) 
 			break;
 
 		if (x == ' ') 
@@ -24,17 +27,15 @@ std::vector<int> tokenise(const std::string &str, std::vector<int> &tokens)
 		}
 		else 
 		{
+			//if char thats not a space is detected, add it to the word.
 			word = word + x;
-			tokens.push_back(std::stoi(word));
+			matrix[row][arr_position] = std::stoi(word);
+			arr_position++;
 		}
-
-		//::cout << word << std::endl;
 	}
-
-	return tokens;
 }
 
-void display_matrix(const int matrix[9][9]) 
+void display_matrix(const std::array<std::array<int,9>,9> &matrix) 
 {
 	for (int i = 0; i < 9; ++i)
 	{
@@ -43,6 +44,8 @@ void display_matrix(const int matrix[9][9])
 			std::cout << matrix[i][j];
 			if (j == 8)
 				std::cout << std::endl;
+			else
+				std::cout << ", ";
 		}
 	}
 }
@@ -50,10 +53,26 @@ void display_matrix(const int matrix[9][9])
 int main()
 {
     std::cout << "Enter the numbers in order with spaces in between (e.g. 1 5 0 3). Leave a 0 for empty spaces..." << std::endl;
-	int matrix[9][9];
 
+	//std::array<std::array<int, 9>, 9> matrix = 
+	//{
+	//	{
+	//		{1,1,1,1,1,1,1,1,1},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{2,2,2,2,2,2,2,2,2},
+	//		{3,3,3,3,3,3,3,3,3}
+	//	}
+	//};
+
+	std::array<std::array<int, 9>, 9> matrix;
+
+	//Takes in user inputs
 	std::string args;
-	//std::getline(std::cin,args);
 	
 	for (int i = 0; i < 9; ++i)
 	{
@@ -61,13 +80,8 @@ int main()
 		args.clear();
 		std::getline(std::cin, args);
 
-		std::vector<int> tokenised;
-		tokenise(args, tokenised);
-		for (int j = 0; j < 9; ++j) 
-		{
-			matrix[i][j] = tokenised.at(j);
-		}
-		tokenised.clear();
+		//User inputs into matrix
+		tokenise(args, i, matrix);
 	}
 
 	display_matrix(matrix);
