@@ -8,14 +8,14 @@ point::point(int _x, int _y)
 	y = _y;
 }
 
-void point::set_x(const int x)
+void point::set_x(const int _x)
 {
-	this.x = x;
+	x = _x;
 }
 
-void point::set_y(const int y)
+void point::set_y(const int _y)
 {
-	this.y = y;
+	y = _y;
 }
 
 int point::get_x() const

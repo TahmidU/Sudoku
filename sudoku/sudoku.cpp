@@ -60,66 +60,90 @@ void display_matrix(const std::array<std::array<int,9>,9> &matrix)
 	}
 }
 
-//bool find_next(const std::array<std::array<int, 9>, 9> &matrix, point &curr_point)
-//{
-//	for (int i = 0; i < 9; ++i)
-//	{
-//		for (int j = 0; j < 9; ++j)
-//		{
-//			if (matrix[i][j] == 0)
-//			{
-//				curr_point = point(i, j);
-//				return true;
-//			}
-//		}
-//	}
-//
-//	return false;
-//}
-//
-//bool validate(const int &num, const std::array<std::array<int, 9>, 9> & matrix, const point& curr_point)
-//{
-//	for (int i = 0; i < 9; ++i) 
-//	{
-//		if (matrix[i][curr_point.get_x()] == num)
-//		{
-//			return false;
-//		}
-//	}
-//
-//	for (int j = 0; j < 9; ++j)
-//	{
-//		if (matrix[curr_point.get_y()][j] == num)
-//		{
-//			return false;
-//		}
-//	}
-//
-//	return true;
-//}
-//
-//bool sudoku_sort(std::array<std::array<int, 9>, 9> &matrix, point &curr_point)
-//{
-//
-//	if (find_next(matrix, curr_point)) 
-//	{
-//		int curr_num = matrix[curr_point.get_x()][curr_point.get_y()];
-//
-//		for (int i = 1; i < 10; ++i) 
-//		{
-//			if (i != curr_num && validate(i, matrix, curr_point))
-//			{
-//				matrix[curr_point.get_x()][curr_point.get_y()] = i;
-//				return sudoku_sort(matrix, curr_point);
-//			}
-//			else
-//				return false;
-//				
-//		}
-//	}
-//	else
-//		return true;
-//}
+bool find_next(const std::array<std::array<int, 9>, 9> &matrix, point& curr_point)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (matrix[i][j] == 0)
+			{
+
+				curr_point = point(j, i);
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool validate(const int &num, const std::array<std::array<int, 9>, 9> & matrix, const point& curr_point)
+{
+	for (int i = 0; i < 9; i++) 
+	{
+		if (matrix[i][curr_point.get_x()] == num && curr_point.get_y() != i)
+		{
+			//std::cout << "x:" << curr_point.get_x() << ", y:" << curr_point.get_y() << std::endl;
+			return false;
+		}
+	}
+
+	for (int j = 0; j < 9; j++)
+	{
+		if (matrix[curr_point.get_y()][j] == num && curr_point.get_x() != j)
+		{
+			//std::cout << "x:" << curr_point.get_x() << ", y:" << curr_point.get_y() << std::endl;
+			return false;
+		}
+	}
+
+	int box_x = curr_point.get_x() / 3;
+	int box_y = curr_point.get_y() / 3;
+
+	for (int i = box_x*3; i < 3; i++)
+	{
+		for (int j = box_y*3; j < 3; j++)
+		{
+			//std::cout << "i:" << i << ", j:" << j << std::endl;
+			if (matrix[i][j] == num)
+			{
+				//std::cout << "x:" << curr_point.get_x() << ", y:" << curr_point.get_y() << std::endl;
+				return false;
+			}
+		}
+	}
+
+	if (matrix[curr_point.get_y()][curr_point.get_x()] != 0)
+		return false;
+
+	return true;
+}
+
+bool sudoku_sort(std::array<std::array<int, 9>, 9> &matrix)
+{
+	point curr_point(0,0);
+
+	if (!find_next(matrix, curr_point))
+		return true;
+
+	for (int i = 1; i <= 9; i++)
+	{
+
+		if (validate(i, matrix, curr_point))
+		{
+			matrix[curr_point.get_y()][curr_point.get_x()] = i;
+
+			if (sudoku_sort(matrix))
+				return true;
+
+			matrix[curr_point.get_y()][curr_point.get_x()] = 0;
+		}
+
+	}
+	return false;
+}
 
 
 
@@ -130,15 +154,15 @@ int main()
 	std::array<std::array<int, 9>, 9> matrix = 
 	{
 		{
-			{6,0,1,0,2,3,5,7,0},
-			{3,7,0,0,0,0,0,0,0},
-			{8,9,5,4,0,0,0,0,0},
-			{1,3,0,7,0,0,0,8,0},
-			{0,0,0,2,1,5,0,0,0},
-			{0,2,0,0,0,9,0,4,1},
-			{0,0,0,0,0,4,8,5,9},
-			{0,0,0,0,0,0,0,1,7},
-			{0,5,7,8,9,0,6,0,2}
+			{3, 0, 6, 5, 0, 8, 4, 0, 0},
+			{5, 2, 0, 0, 0, 0, 0, 0, 0},
+			{0, 8, 7, 0, 0, 0, 0, 3, 1},
+			{0, 0, 3, 0, 1, 0, 0, 8, 0},
+			{9, 0, 0, 8, 6, 3, 0, 0, 5},
+			{0, 5, 0, 0, 9, 0, 6, 0, 0},
+			{1, 3, 0, 0, 0, 0, 2, 5, 0},
+			{0, 0, 0, 0, 0, 0, 0, 7, 4},
+			{0, 0, 5, 2, 0, 6, 3, 0, 0}
 		}
 	};
 
@@ -146,9 +170,6 @@ int main()
 
 	//takes in user inputs
 	std::string args;
-
-	//start at 0,0
-	point curr_point(0,0);
 	
 	do
 	{
@@ -159,8 +180,12 @@ int main()
 		std::getline(std::cin, args);
 	} while (args != "y");
 
-	//sudoku_sort(matrix, curr_point);
+	/*if (sudoku_sort(matrix, curr_point))
+		display_matrix(matrix);
+	else
+		std::cout << "No solution found." << std::endl;*/
 
+	sudoku_sort(matrix);
 	display_matrix(matrix);
 
 	return 0;

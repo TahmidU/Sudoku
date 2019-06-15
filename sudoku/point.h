@@ -12,9 +12,9 @@ public:
 
 	point(int x, int y);
 
-	void set_x(const int x);
+	void set_x(const int _x);
 
-	void set_y(const int y);
+	void set_y(const int _y);
 
 	int get_x() const;
 
