@@ -3,7 +3,7 @@
 Sudoku solver console application made using C++. Simply enter the numbers in each line or hard code the numbers into the 2D matrix array.
 
 ## Installation
-C++ Compiler required. For this project I used the Microsoft C++ Compiler (MSVC).
+C++ Compiler required. Specifically, the Microsoft C++ Compiler (MSVC).
 
 ## Usage
 
@@ -49,7 +49,7 @@ Alternatively, comment everything in main (besides the return 0 statement) and u
 		std::cout << "No solution found. Probably mal input." << std::endl;
 
 ```
-Then run the code.
+Then run the code from either the terminal (use one of command prompt provided by visual studio to load the vcvarsall.bat then type: cl sudoku.cpp and run the exe) or from the the visual studio IDE.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
