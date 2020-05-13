@@ -153,8 +153,6 @@ bool sudoku_solve(std::array<std::array<int, 9>, 9>& matrix)
 
 int main()
 {
-	//zero would be our unassigned symbol since it keeps things simplier.
-	std::cout << "Enter the numbers in order with spaces in between (e.g. 1 5 0 3 0 0 0 0 0). Leave a 0 for empty spaces..." << std::endl;
 
 	//Use the stuff bellow to skip inputting into the console.
 
@@ -177,6 +175,9 @@ int main()
 		display_matrix(matrix);
 
 	//Uncomment the code bellow and comment the code above to manually type into the console.
+	
+	//zero would be our unassigned symbol since it keeps things simplier.
+	//std::cout << "Enter the numbers in order with spaces in between (e.g. 1 5 0 3 0 0 0 0 0). Leave a 0 for empty spaces..." << std::endl;
 
 	//std::array<std::array<int, 9>, 9> matrix;
 
